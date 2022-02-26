@@ -1,2 +1,2 @@
-# TechWizards
+# Tech Wizards
 
