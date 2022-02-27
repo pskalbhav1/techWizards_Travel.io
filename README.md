@@ -1,7 +1,5 @@
 # Team Tech_Wizards Travel.io
 
-
-
 ## Title
 Travel.io
 
@@ -105,7 +103,7 @@ OSMnx is a Python package that lets you download geospatial data from OpenStreet
 
 
 ### 8. geopy<br><br>
-geopy is a Python client for several popular geocoding web services. geopy makes it easy for Python developers to locate the coordinates of addresses, cities, countries, and landmarks across the globe using third-party geocoders and other data sources.<br><br>
+geopy is a Python client for several popular geocoding web services. geopy makes it easy for Python developers to locate the coordinates of addresses, cities, countries, and landmarks across the globe using third-party geocoders & other data sources.<br><br>
 
 <b>Installation</b>:
        
