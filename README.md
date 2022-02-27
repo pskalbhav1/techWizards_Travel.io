@@ -20,7 +20,7 @@ We plan to make it more Indianized, focusing more on accuracy as well as the acc
 ### 2. Chat Community with fellow travellers
 Going on a solo trip and looking forward to meeting people with the same interests?
 
-You can now do that using Travel.io. We can help you by <b>tracking your location and connecting with people nearby</br> having a chat, or even meeting and continuing your journey together.
+You can now do that using Travel.io. We can help you by <b>tracking your location and connecting with people nearby</b>, having a chat, or even meeting and continuing your journey together.
 
 ### 3. Recommendation on places to visit along the way
 Want to enjoy your journey and leave no place out? 
