@@ -9,8 +9,23 @@ Let every journey be unique, every place you visit be a new sight, every day of 
 ## Description
 
 ## Tech Stack Used
+- Flask
+- HTML
+- CSS
+- Python
+- Javascript
+- Jquery
+
 
 ## Installation steps
+```
+git clone https://github.com/divyashreedivya/techWizards.git
+cd techWizards
+python3 -m venv env
+source env/bin/activate
+pip3 install -r requirements.txt
+flask run
+```
 
 ## Libraries and dependencies
 ### 1. geocoder : <br><br>

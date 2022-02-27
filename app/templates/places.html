@@ -1,20 +1,12 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-  
-  <title>Places</title>
-  <style>
-    /* internal css */
-    body {
-      background: #726363;
-    }
-  </style>
-</head>
-
-<body>
-
-  <div class="navbar navbar-inverse navbar-fixed-top">
+{% extends "layout.html" %}
+{% block title %}Room chat{% endblock %}
+{% block head %}
+  {{ super() }}
+{% block scripts %}
+{% endblock %}
+{% endblock %}
+{% block content %}
+  <!-- <div class="navbar navbar-inverse navbar-fixed-top">
        
     <div class="container">
         <div class="navbar-header">
@@ -39,13 +31,12 @@
         </div>
        
     </div>
-</div>
-
+</div> -->
 <iframe style=" position: fixed; top:  0; right : 0; width : 70%; height : 100vh" src="url_for('static',filename='route.html')" name="targetframe" allowTransparency="true" scrolling="no" frameborder="0" >
 </iframe>
 
-    
-    <div style="position: fixed; left: 2.5em; top : 0;">
+<br/><br/><br/><br/><br/><br/><br/><br/>
+    <div style=" left: 2.5em; top : 0;">
     <br>
     <br>
     <form>
@@ -75,10 +66,4 @@
     </form>
 
   </div>
-
-</body>
-
-<script>
-
-</script> 
-</html>
+  {% endblock %}
