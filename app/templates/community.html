@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+{% block title %}Room chat{% endblock %}
+{% block head %}
+  {{ super() }}
+{% block scripts %}
+{% endblock %}
+{% endblock %}
+{% block content %}
+<br/><br/><br/><br/>
+{% if session.loggedin %}
+ <p> Hello {{session.name}}</p>
+ <form action="{{ url_for('room') }}" method="post">
+  <!-- <div class="msg">{{ msg }}</div> -->
+    <input id="member2" name="member2" type="text" placeholder="" class="textbox"/></br></br>
+    <input type="submit" class="btn" value="Submit"></br></br>
+  </form>
+  {{map | safe}}
+ {% else %}
+ <p> Please login</p>
+ {% endif %}
+{% endblock %}

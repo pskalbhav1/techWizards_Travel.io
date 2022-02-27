@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+{% block title %}Voice{% endblock %}
+{% block head %}
+  {{ super() }}
+{% block scripts %}
+<script>
+function stopVoice(){
+    var val =  sessionStorage.getItem("stop");
+    console.log(val);
+}
+</script>
+{% endblock %}
+{% endblock %}
+{% block content %}
+<div class="input-single">
+
+
+    <a href="{{url_for('voice')}}" ><button id="start-record-btn" title="Start Recording">Start Recognition</button></a>
+    <button onclick="stopVoice()" id="pause-record-btn" title="Pause Recording">Pause</button>
+                    <br><br>
+                      
+                    <p id="recording-instructions">Press the <strong>Start Recognition</strong> button and allow access.</p>
+{% endblock %}

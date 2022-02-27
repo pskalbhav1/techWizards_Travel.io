@@ -7,10 +7,19 @@
   </style>
 {% endblock %}
 {% block content %}
-  <h1>Index</h1>
- {% if session.loggedin %}
- <p> Hello {{session.token}}</p>
- {% else %}
- <p> Please login</p>
- {% endif %}
+  <div id="home-sec">
+
+   
+    <div class="container"  >
+        <div class="row text-center">
+            <div  class="col-md-12" >
+                <center>
+                   <span class="head-main" >TRAVEL.IO</span> 
+                </center>
+                <h3 class="head-last col-md-4 col-md-offset-4  col-sm-6 col-sm-offset-3">Let every journey be unique, every place you visit be a new sight, every day of your journey be a new experience, and every moment be a wonderful memory. </h3>                 
+            </div>
+        </div>
+    </div>
+         </div>
+ 
 {% endblock %}
