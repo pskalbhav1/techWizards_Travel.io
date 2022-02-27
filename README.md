@@ -7,7 +7,9 @@ Travel.io
 Let every journey be unique, every place you visit be a new sight, every day of your journey be a new experience,and every moment be a wonderful memory. 
 
 ## Description
-Travel.io is an interactive travel application that caters to the needs of a travel during his entire journey.
+Want to explore the world while facing no hassles, have nothing to worry about and enjoy to the max? 
+
+<b>Travel.io</b> is an interactive travel application that caters to the needs of a travel during his entire journey. Our features inclue: 
 
 ### 1. Multilingual Voice Conversion
 Looking to have a conversion-free trip? No worries. We got you there.
