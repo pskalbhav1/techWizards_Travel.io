@@ -6,6 +6,8 @@ import uuid
 import jwt
 import datetime
 from functools import wraps
+from haversine import inverse_haversine, Direction
+from math import pi
 
 #voice
 import geocoder
@@ -23,7 +25,7 @@ load_dotenv()
 from flask_socketio import SocketIO,join_room,leave_room
 
 from app import app
-
+ 
 app.config['SECRET_KEY']=os.getenv('SECRET_KEY')
 app.config['SQLALCHEMY_DATABASE_URI']=os.getenv('SQLALCHEMY_DATABASE_URI')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
@@ -39,6 +41,8 @@ class Users(db.Model):
     name = db.Column(db.String(50))
     password = db.Column(db.String(50))
     admin = db.Column(db.Boolean)
+    lat = db.Column(db.String(50))
+    long = db.Column(db.String(50))
     websocket_id = db.Column(db.String, unique=True, index=True)
 
 class Room(db.Model):
@@ -65,6 +69,14 @@ def create_tables():
 
 @app.route("/")
 def index():
+    ip = geocoder.ip("me")
+    location = ip.latlng
+    print(session['publicid'])
+    if session['publicid']:
+        user = Users.query.filter_by(public_id=session['publicid']).first()
+        user.lat = round(location[0])
+        user.long = round(location[1])
+        db.session.commit()
     return render_template('index.html')
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -152,7 +164,34 @@ def get_all_users():
 
 @app.route('/community',methods=['GET','POST'])
 def community():
-    return render_template('community.html')
+    ip=geocoder.ip("me")
+    loc=ip.latlng
+    print(ip)
+    map = folium.Map(location=loc, zoom_start=10)
+    folium.CircleMarker(location=loc, radius=50, color="blue").add_to(map)
+    folium.Marker(loc).add_to(map)
+    #finding nearby locations
+    loc1=inverse_haversine(loc, 100, Direction.WEST)
+    loc2=inverse_haversine(loc, 100, Direction.EAST)
+    loc3=inverse_haversine(loc, 100, Direction.SOUTH)
+    loc4=inverse_haversine(loc, 100, Direction.NORTH)
+    user = Users.query.filter_by(lat=loc1[0],long=loc1[1]).first()
+    if user:
+        folium.CircleMarker(location=loc1,popup = user.public_id, radius=50, color="red").add_to(map)
+        folium.Marker(loc1).add_to(map)
+    user = Users.query.filter_by(lat=loc2[0],long=loc2[1]).first()
+    if user:
+        folium.CircleMarker(location=loc2,popup = user.public_id, radius=50, color="red").add_to(map)
+        folium.Marker(loc2).add_to(map)
+    user = Users.query.filter_by(lat=loc3[0],long=loc3[1]).first()
+    if user:
+        folium.CircleMarker(location=loc3,popup = user.public_id, radius=50, color="red").add_to(map)
+        folium.Marker(loc3).add_to(map)
+    user = Users.query.filter_by(lat=loc4[0],long=loc4[1]).first()
+    if user:
+        folium.CircleMarker(location=loc4,popup = user.public_id, radius=50, color="red").add_to(map)
+        folium.Marker(loc4).add_to(map)
+    return render_template('community.html',map=map._repr_html_())
 
 @app.route("/room",methods=['GET','POST'])
 def room():
@@ -181,11 +220,12 @@ xext=''
 def translate(language,text):
     ip = geocoder.ip("me")
     location = ip.latlng
-    map = folium.Map(location=location, zoom_start=10)
-    folium.CircleMarker(location=location, radius=50, color="red").add_to(map)
-    folium.Marker(location).add_to(map)
-    map.save("map.html")
-    with open('data.csv', 'r') as read_obj:
+    # map = folium.Map(location=location, zoom_start=10)
+    # folium.CircleMarker(location=location, radius=50, color="red").add_to(map)
+    # folium.Marker(location).add_to(map)
+    # map.save("map.html")
+    target = os.path.join(app.static_folder,'data.csv')
+    with open(target, 'r') as read_obj:
         csv_reader = reader(read_obj)
         for row in csv_reader:
             if row[0]==ip.city:
@@ -230,8 +270,27 @@ def translate(language,text):
         except StopIteration:
             return
 
+@app.route("/translatevoice")
+def translatevoice():
+    ip = geocoder.ip("me")
+    location = ip.latlng
+    map = folium.Map(location=location, zoom_start=10)
+    folium.CircleMarker(location=location, radius=50, color="red").add_to(map)
+    folium.Marker(location).add_to(map)
+    return render_template('translate.html',map=map._repr_html_())
+
 @app.route("/voice")
 def voice():
     # session['stop']=False
     translate(language,text)
     return render_template('index1.html')
+
+@app.route('/test')
+def test():
+    ip = geocoder.ip("me")
+    location = ip.latlng
+    map = folium.Map(location=location, zoom_start=10)
+    folium.CircleMarker(location=location, radius=50, color="red").add_to(map)
+    folium.Marker(location).add_to(map)
+    return render_template('test.html',map=map._repr_html_())
+

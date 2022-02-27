@@ -14,7 +14,7 @@
     <input id="member2" name="member2" type="text" placeholder="" class="textbox"/></br></br>
     <input type="submit" class="btn" value="Submit"></br></br>
   </form>
-  <embed type="text/html" src="" width="500" height="200">
+  {{map | safe}}
  {% else %}
  <p> Please login</p>
  {% endif %}
