@@ -48,8 +48,10 @@
 {% endblock %}
 {% block content %}
 <br/><br/>
-<h1>Flask-SocketIO-Chat: {{ room }}</h1>
-<textarea id="chat" cols="80" rows="20"></textarea><br><br>
-<input id="text" size="80" placeholder="Enter your message here"><br><br>
+<center>
+<h1>ChatRoom: {{ room }}</h1>
+<textarea  border-radius="4px" background-color="#f8f8f8" id="chat" cols="80" rows="20"></textarea><br><br>
+<input border-radius="4px" id="text" size="80" placeholder="Enter your message here"><br><br>
 <a href="#" onclick="leave_room();">Leave this room</a>
+</center>
 {% endblock %}
