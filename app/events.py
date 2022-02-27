@@ -11,7 +11,7 @@ def joined(message):
     print('Joined to ', room)
     join_room(room)
     if room:
-        emit('status', {'msg': session.get('publicid') + ' has entered the room.'}, room=room)
+        emit('status', {'msg': session.get('name') + ' has entered the room.'}, room=room)
 
 
 @socketio.on('text', namespace='/chat')
@@ -21,7 +21,7 @@ def text(message):
     room = session.get('room')
     print('Messaged to ',room)
     if message and message['msg']:
-        emit('message', {'msg': session.get('publicid') + ':' + message['msg']}, room=room)
+        emit('message', {'msg': session.get('name') + ' : ' + message['msg']}, room=room)
 
 
 @socketio.on('left', namespace='/chat')
@@ -31,4 +31,4 @@ def left(message):
     room = session.get('room')
     print('Left ',room)
     leave_room(room)
-    emit('status', {'msg': session.get('publicid') + ' has left the room.'}, room=room)
+    emit('status', {'msg': session.get('name') + ' has left the room.'}, room=room)

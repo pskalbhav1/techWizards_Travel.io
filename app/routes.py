@@ -19,6 +19,14 @@ import folium
 import speech_recognition as sr
 from playsound import playsound
 
+#places
+import osmnx as ox
+from geopy.geocoders import Nominatim
+import networkx as nx
+import haversine as hs
+import geopy.distance
+import openrouteservice as ors
+
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -130,6 +138,7 @@ def login():
                 token = jwt.encode({'public_id': user.public_id, 'exp' : datetime.datetime.utcnow() + datetime.timedelta(minutes=30)}, app.config['SECRET_KEY'])  
                 session['loggedin']=True
                 session['token']=token
+                session['name']=user.name
                 session['publicid'] = user.public_id
                 msg = 'Logged in Successfully'
             else:
@@ -171,13 +180,13 @@ def community():
     folium.CircleMarker(location=loc, radius=50, color="blue").add_to(map)
     folium.Marker(loc).add_to(map)
     #finding nearby locations
-    loc1=inverse_haversine(loc, 100, Direction.WEST)
-    loc2=inverse_haversine(loc, 100, Direction.EAST)
-    loc3=inverse_haversine(loc, 100, Direction.SOUTH)
-    loc4=inverse_haversine(loc, 100, Direction.NORTH)
+    loc1=inverse_haversine(loc, 40, Direction.WEST)
+    loc2=inverse_haversine(loc, 40, Direction.EAST)
+    loc3=inverse_haversine(loc, 40, Direction.SOUTH)
+    loc4=inverse_haversine(loc, 40, Direction.NORTH)
     user = Users.query.filter_by(lat=loc1[0],long=loc1[1]).first()
     if user:
-        folium.CircleMarker(location=loc1,popup = user.public_id, radius=50, color="red").add_to(map)
+        folium.CircleMarker(location=loc1,popup = 'location', radius=50, color="red").add_to(map)
         folium.Marker(loc1).add_to(map)
     user = Users.query.filter_by(lat=loc2[0],long=loc2[1]).first()
     if user:
@@ -185,12 +194,12 @@ def community():
         folium.Marker(loc2).add_to(map)
     user = Users.query.filter_by(lat=loc3[0],long=loc3[1]).first()
     if user:
-        folium.CircleMarker(location=loc3,popup = user.public_id, radius=50, color="red").add_to(map)
+        folium.CircleMarker(location=loc3,popup = 'location', radius=50, color="red").add_to(map)
         folium.Marker(loc3).add_to(map)
     user = Users.query.filter_by(lat=loc4[0],long=loc4[1]).first()
-    if user:
-        folium.CircleMarker(location=loc4,popup = user.public_id, radius=50, color="red").add_to(map)
-        folium.Marker(loc4).add_to(map)
+    # if user:
+    folium.CircleMarker(location=loc4,popup = 'user', radius=50, color="red").add_to(map)
+    folium.Marker(loc4).add_to(map)
     return render_template('community.html',map=map._repr_html_())
 
 @app.route("/room",methods=['GET','POST'])
@@ -294,3 +303,167 @@ def test():
     folium.Marker(location).add_to(map)
     return render_template('test.html',map=map._repr_html_())
 
+#places
+def getAttraction(m, place, graph, orig_node, dest_node, dist):
+    atttag = {'tourism' : 'attraction'}
+    att = ox.geometries_from_place(place, tags = atttag)
+    att_points = att[att.geom_type == 'Point'][:100]
+    attlocs = zip(att_points.geometry.y, att_points.geometry.x)
+    attname = att_points.name
+    index = 0
+    for location in attlocs:
+        currloc = ox.get_nearest_node(graph, location)
+        if nx.has_path(graph, orig_node, currloc) == False or nx.has_path(graph, currloc, dest_node) == False:
+            index += 1
+            continue
+        dist1 = nx.shortest_path_length(graph, orig_node, currloc)
+        dist2 = nx.shortest_path_length(graph, currloc, dest_node)
+        d = dist1 + dist2
+        if d <= 30 + dist:
+            folium.Marker(location = location, icon=folium.Icon(color='blue'), popup = attname[index]).add_to(m)
+        index += 1 
+    return m
+        
+def getPub(m, place, graph, orig_node, dest_node, dist):
+    pubtag = {'amenity' : 'pub'}
+    pub = ox.geometries_from_place(place, tags = pubtag)
+    pub_points = pub[pub.geom_type == 'Point'][:100]
+    publocs = zip(pub_points.geometry.y, pub_points.geometry.x)
+    pubname = pub_points.name
+    index = 0
+    for location in publocs:
+        currloc = ox.get_nearest_node(graph, location)
+        if nx.has_path(graph, orig_node, currloc) == False or nx.has_path(graph, currloc, dest_node) == False:
+            index += 1
+            continue
+        dist1 = nx.shortest_path_length(graph, orig_node, currloc)
+        dist2 = nx.shortest_path_length(graph, currloc, dest_node)
+        d = dist1 + dist2
+        if d <= 30 + dist:
+            folium.Marker(location = location, icon=folium.Icon(color='orange'), popup = pubname[index]).add_to(m)
+        index += 1  
+    return m
+
+def getPark(m, place, graph, orig_node, dest_node, dist):
+    parktag = {'leisure' : 'park'}
+    park = ox.geometries_from_place(place, tags = parktag)
+    park_points = park[park.geom_type == 'Point'][:100]
+    parklocs = zip(park_points.geometry.y, park_points.geometry.x)
+    parkname = park_points.name
+    index = 0
+    for location in parklocs:
+        currloc = ox.get_nearest_node(graph, location)
+        if nx.has_path(graph, orig_node, currloc) == False or nx.has_path(graph, currloc, dest_node) == False:
+            index += 1
+            continue
+        dist1 = nx.shortest_path_length(graph, orig_node, currloc)
+        dist2 = nx.shortest_path_length(graph, currloc, dest_node)
+        d = dist1 + dist2
+        if d <= 30 + dist:
+            folium.Marker(location = location, icon=folium.Icon(color='green'), popup = parkname[index]).add_to(m)
+        index += 1  
+    return m
+
+def getRestraunt(m, place, graph, orig_node, dest_node, dist):
+    rstntag = {'amenity' : 'restaurant'}
+    rstn = ox.geometries_from_place(place, tags = rstntag)
+    rstn_points = rstn[rstn.geom_type == 'Point'][:100]
+    rstnlocs = zip(rstn_points.geometry.y, rstn_points.geometry.x)
+    rstnname = rstn_points.name
+    index = 0
+    for location in rstnlocs:
+        currloc = ox.get_nearest_node(graph, location)
+        if nx.has_path(graph, orig_node, currloc) == False or nx.has_path(graph, currloc, dest_node) == False:
+            index += 1
+            continue
+        dist1 = nx.shortest_path_length(graph, orig_node, currloc)
+        dist2 = nx.shortest_path_length(graph, currloc, dest_node)
+        d = dist1 + dist2
+        if d <= 30 + dist:
+            folium.Marker(location = location, icon=folium.Icon(color='black'), popup = rstnname[index]).add_to(m)
+        index += 1  
+    return m
+    
+def getCafe(m, place, graph, orig_node, dest_node, dist):
+    cafetag = {'amenity' : 'cafe'}
+    cafe = ox.geometries_from_place(place, tags = cafetag)
+    cafe_points = cafe[cafe.geom_type == 'Point'][:100]
+    cafelocs = zip(cafe_points.geometry.y, cafe_points.geometry.x)
+    cafename = cafe_points.name
+    index = 0
+    for location in cafelocs:
+        currloc = ox.get_nearest_node(graph, location)
+        if nx.has_path(graph, orig_node, currloc) == False or nx.has_path(graph, currloc, dest_node) == False:
+            index += 1
+            continue
+        dist1 = nx.shortest_path_length(graph, orig_node, currloc)
+        dist2 = nx.shortest_path_length(graph, currloc, dest_node)
+        d = dist1 + dist2
+        if d <= 30 + dist:
+            folium.Marker(location = location, icon=folium.Icon(color='orange'), popup = cafename[index]).add_to(m)
+        index += 1  
+    return m
+        
+def getHotel(m, place, graph, orig_node, dest_node, dist):
+    hoteltag = {'tourism' : 'hotel'}
+    hotel = ox.geometries_from_place(place, tags = hoteltag)
+    hotel_points = hotel[hotel.geom_type == 'Point'][:100]
+    hotellocs = zip(hotel_points.geometry.y, hotel_points.geometry.x)
+    hotelname = hotel_points.name
+    index = 0
+    for location in hotellocs:
+        currloc = ox.get_nearest_node(graph, location)
+        if nx.has_path(graph, orig_node, currloc) == False or nx.has_path(graph, currloc, dest_node) == False:
+            index += 1
+            continue
+        dist1 = nx.shortest_path_length(graph, orig_node, currloc)
+        dist2 = nx.shortest_path_length(graph, currloc, dest_node)
+        d = dist1 + dist2
+        if d <= 30 + dist:
+            folium.Marker(location = location, icon=folium.Icon(color='red'), popup = hotelname[index]).add_to(m)
+        index += 1  
+    return m
+        
+
+def initialMap(place, final_dest, att_flag, park_flag, hotel_flag, rstn_flag, cafe_flag, pub_flag):
+    loc = Nominatim(user_agent = 'GetLoc')
+    getLoc = loc.geocode(place)
+
+    tloc = Nominatim(user_agent = 'GetLoc') 
+    getFLoc = tloc.geocode(final_dest)
+
+    loc1 = (getLoc.latitude, getLoc.longitude)
+    loc2 = (getFLoc.latitude, getFLoc.longitude)
+
+    graph = ox.graph_from_place(place, network_type = "drive")
+    orig_node = ox.get_nearest_node(graph, loc1)
+    dest_node = ox.get_nearest_node(graph, loc2)
+    
+    shortest_route = nx.shortest_path(graph, orig_node, dest_node, weight = "distance")
+    m = ox.plot_route_folium(graph, shortest_route)
+    dist = nx.shortest_path_length(graph, orig_node, dest_node)
+    
+    start = folium.Marker(location = loc1, popup = place, icon = folium.Icon(color='purple')).add_to(m)
+    end = folium.Marker(location = loc2,  popup = final_dest, icon = folium.Icon(color='purple')).add_to(m)
+
+    if att_flag == True:
+        m = getAttraction(m,place,graph, orig_node, dest_node, dist)
+    if park_flag == True:
+        m = getPark(m,place,graph, orig_node, dest_node, dist)
+    if hotel_flag == True:
+        m = getHotel(m,place,graph, orig_node, dest_node, dist)
+    if rstn_flag == True:
+        m = getRestraunt(m,place,graph, orig_node, dest_node, dist)
+    if cafe_flag == True:
+        m = getCafe(m,place,graph, orig_node, dest_node, dist)
+    if pub_flag == True:
+        m = getPub(m,place,graph, orig_node, dest_node, dist)
+        
+    # m.save("route.html")
+    return m
+
+
+@app.route('/places')
+def places():
+    # m = initialMap('Bangalore', 'Mysuru', True, False, False, False, False, False)
+    return render_template('places.html')
