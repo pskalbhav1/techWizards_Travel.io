@@ -48,7 +48,7 @@ Calculate the distance (in various units) between two points on Earth using thei
      
          pip install haversine
          
-### 6. gflask : <br><br>
+### 6. flask : <br><br>
 Flask is a micro web framework written in Python. It is classified as a microframework because it does not require particular tools or libraries.
      
 <b>Installation</b>:
@@ -83,6 +83,15 @@ The openrouteservice API provides global spatial services by consuming user-gene
 <b>Installation</b>:
   
          pip install openrouteservice
+         
+### 11. langdetect<br><br>
+Port of Nakatani Shuyo's language-detection library (version from 03/03/2014) to Python.
+
+<b>Installation</b>:
+  
+         pip install langdetect
+
+
          
 ## Declaration of Previous Work
 None
