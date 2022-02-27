@@ -146,6 +146,3 @@ Socket.IO is a library that enables real-time, bidirectional and event-based com
          
 ## Declaration of Previous Work
 None
-
-
-
