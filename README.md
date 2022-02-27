@@ -90,6 +90,13 @@ Port of Nakatani Shuyo's language-detection library (version from 03/03/2014) to
 <b>Installation</b>:
   
          pip install langdetect
+         
+### 12. translate<br><br>
+Translate is a simple but powerful translation tool written in python with with support for multiple translation providers
+
+<b>Installation</b>:
+  
+         pip install translate
 
 
          
