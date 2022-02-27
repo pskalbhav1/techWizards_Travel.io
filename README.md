@@ -11,7 +11,7 @@ Let every journey be unique, every place you visit be a new sight, every day of 
 ## Description
 Want to explore the world while facing no hassles, have nothing to worry about and enjoy to the max? 
 
-<b>Travel.io</b> is an interactive travel application that caters to the needs of a travel during his entire journey. Our features inclue: 
+<b>Travel.io</b> is an interactive travel application that caters to the needs of a travel during his entire journey. Our features include: 
 
 [Main Page](https://github.com/divyashreedivya/techWizards/blob/main/images/home.png)
 
