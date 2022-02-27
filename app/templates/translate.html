@@ -15,12 +15,13 @@ function stopVoice(){
 <br/><br/><br/><br/>
 <div class="input-single">
 
-
-    <a href="{{url_for('voice')}}" ><button id="start-record-btn" title="Start Recording">Start Recognition</button></a>
-    <button onclick="stopVoice()" id="pause-record-btn" title="Pause Recording">Pause</button>
-                    <br><br>
-                      
-                    <p id="recording-instructions">Press the <strong>Start Recognition</strong> button and allow access.</p>
-
-                    {{map | safe}}
+<center>
+  <a href="{{url_for('voice')}}" >
+    <button background-color=" #4CAF50" color="white"  padding="15px 32px" text-align="center" text-decoration="none" display="inline-block" font-size="16px" id="start-record-btn" title="Start Recording">Start Recognition</button>
+  </a>
+  <button background-color=" #4CAF50" color="white"  padding="15px 32px" text-align="center" text-decoration="none" display="inline-block" font-size="16px" onclick="stopVoice()" id="pause-record-btn" title="Pause Recording">Pause</button>
+  <br><br>
+  <p id="recording-instructions">Press the <strong>Start Recognition</strong> button and allow access.</p>
+</center>
+{{map | safe}}
 {% endblock %}
