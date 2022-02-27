@@ -7,6 +7,28 @@ Travel.io
 Let every journey be unique, every place you visit be a new sight, every day of your journey be a new experience,and every moment be a wonderful memory. 
 
 ## Description
+Travel.io is an interactive travel application that caters to the needs of a travel during his entire journey.
+
+### 1. Multilingual Voice Conversion
+Looking to have a conversion-free trip? No worries. We got you there.
+
+  Our tool <b>acts as an interpreter</b> and helps ease communication between you and whomever you want to speak to. We figure out the geographical location and pick up the language to translate to as well.
+  
+<b>Future plans:</b>
+We plan to make it more Indianized, focusing more on accuracy as well as the accent to give the best results.
+  
+### 2. Chat Community with fellow travellers
+Going on a solo trip and looking forward to meeting people with the same interests?
+
+You can now do that using Travel.io. We can help you by <b>tracking your location and connecting with people nearby</br> having a chat, or even meeting and continuing your journey together.
+
+### 3. Recommendation on places to visit along the way
+Want to enjoy your journey and leave no place out? 
+
+We give you a <b>message when you are passing by a must-see place or place with a lot of good reviews</b>. We also provide details about restaurants and their reviews.
+
+<b>Future plans:</b>
+We have plans to make it more <b>accurate</b> and maybe also allow you to <b>scan something on your way, and get every detail</b> about it.
 
 ## Tech Stack Used
 
@@ -98,7 +120,12 @@ Translate is a simple but powerful translation tool written in python with with 
   
          pip install translate
 
+### 13. Socket.IO<br><br>
+Socket.IO is a library that enables real-time, bidirectional and event-based communication between the browser and the server.Socket.IO is a JavaScript library for realtime web applications. It enables realtime, bi-directional communication between web clients and servers.
 
+<b>Installation</b>:
+
+         npm install socket.io
          
 ## Declaration of Previous Work
 None
