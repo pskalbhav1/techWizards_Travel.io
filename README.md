@@ -15,7 +15,7 @@ Want to explore the world while facing no hassles, have nothing to worry about a
 
 [Main Page](https://github.com/divyashreedivya/techWizards/blob/main/images/home.png)
 
-### 1. Multilingual Voice Conversion
+### 1. Multilingual Realtime Language Translation
 Looking to have a conversion-free trip? No worries. We got you there.
 
   Our tool <b>acts as an interpreter</b> and helps ease communication between you and whomever you want to speak to. We figure out the geographical location and pick up the language to translate to as well.
